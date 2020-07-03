@@ -9,9 +9,16 @@
 
 ]]
 
---[[ O que está sendo feito: Tela de menu e inserção de som inicial.
+--[[ O que está sendo feito: X(Tela de menu) e inserção de som inicial.
+                               Máquina de estados
 
 ]]
+
+function menu(width,height,buttons)
+
+end
+
+
 function newButton(text, fn)
   return{
       text = text,
@@ -25,19 +32,33 @@ end
 
 local buttons = {}
 
-local font = nil
+local font = "CHINESETAKEAWAY.ttf"
+
+local estado = 0
 
 function love.load()
   font = love.graphics.newFont(20)
   love.window.setTitle("Ninja Cut")
-  --love.window.setMode(1080, 720)
+  love.window.setMode(1024, 840)
+  
+  local w,h =love.graphics.getDimensions()
+  
+  -- No menu
+  bkg_menu2 = love.graphics.newImage("bkg_menu2.jpg")
+  --src1 = love.audio.newSource("sounds/soundtrack/The Story So Far Bad Luck.mp3","stream")
+  --love.audio.play(src1)
+  
+  
   
     table.insert(buttons, newButton(
+        
         "Start Game",
         function()
+          estado = estado +1  -- funcionando
           print("Starting Game")
         end))
 
+--[[
     table.insert(buttons, newButton(
         "Load Game",
         function()
@@ -50,6 +71,8 @@ function love.load()
         print("Going to Settings menu")
       end))
       
+      ]]
+      
       table.insert(buttons, newButton(
       "Exit",
       function()
@@ -57,14 +80,32 @@ function love.load()
       end))
 end
 
-
+--[[
 function love.update(dt)
   
 end
+]]
+
 
 
 function love.draw()
   local w,h =love.graphics.getDimensions()
+  
+  love.graphics.setColor(1,1,1)
+  love.graphics.draw(bkg_menu2)
+  
+  
+  
+  -- imagino que substituirei tudo a baixo por funções
+  love.graphics.setColor(1,1,1)
+  love.graphics.draw(bkg_menu2)
+  
+  love.graphics.setNewFont("CHINESETAKEAWAY.ttf", 200)
+  love.graphics.setColor(1,1,1)
+  love.graphics.print("NINJA CUT",100,100)
+  
+
+
   
   local button_width = w * (1/3)
   local button_height = h * (1/15)
@@ -72,6 +113,9 @@ function love.draw()
   
   local total_height = (button_height + margin) * #buttons
   local cursor_y = 0
+  
+  
+  
   
   for i, button in ipairs(buttons) do
       button.last = button.now
@@ -113,12 +157,19 @@ function love.draw()
           button.text,
           font,
           (w*0.5) - textW * 0.5,
-         -- bx,
           by + textH * 0.5
           )
       
       cursor_y = cursor_y + (button_height + margin)  
       
-    end
+  end
+    
+    -- Agora é preciso fazer com que o jogo vá da opção "Start Game" para o jogo.
+    --      Pensei transformar o que der ali em cima na Draw em função e criar uma máquina de estados. Assim, quando o usuário startasse "mde = 1" e o jogo começaria.
+    
+  
+    
+    
+    
 end  
   
