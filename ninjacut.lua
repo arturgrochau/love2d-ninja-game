@@ -14,8 +14,78 @@
 
 ]]
 
-function menu(width,height,buttons)
+function menu(width,height,buttons,font)
+  -- poe o background
+  love.graphics.setColor(1,1,1)
+  love.graphics.draw(bkg_menu2)
+  
+  -- desenha o título da tela
+  love.graphics.setNewFont("CHINESETAKEAWAY.ttf", 200)
+  love.graphics.setColor(1,1,1)
+  love.graphics.print("NINJA CUT",100,100)
+  
+  -- decide o tamanho dos botões
+  local button_width = width * (1/3) + 40
+  local button_height = height * (1/15) + 40
+  local margin = 20
+  
+  
+  local total_height = (button_height + margin) * #buttons
+  local cursor_y = 0
+  
+  
+  
+  for i, button in ipairs(buttons) do
+      button.last = button.now
+    
+      local bx = (width * 0.5) - (button_width * 0.5)
+      local by = (height*0.5) - (total_height * 0.5) + cursor_y + 60
+      
+      local color = {0.4, 0.4, 0.5,1.0}
+      local mx,my = love.mouse.getPosition()
+      
+      
+      local hot = mx > bx and mx < bx + button_width and
+                  my > by and my < by + button_height
+                  
+      if hot then
+        color = {0.8,0.8,0.9, 1.0}
+      end
+      
+      button.now = love.mouse.isDown(1)
+      if button.now and not button.last and hot then
+        button.fn()
+      end
+      
+      love.graphics.setColor(unpack(color))
+      love.graphics.rectangle(
+        "fill",
+        bx,
+        by,
+        button_width,
+        button_height
+      )
+        
+      love.graphics.setColor(0,0,0,1)
+      
+      local textW = font:getWidth(button.text)
+      local textH = font:getHeight(button.text)
+      
+      love.graphics.print(
+          button.text,
+          font,
+          (width*0.5) - textW * 0.5,
+          by + textH * 0.5
+          )
+      
+      cursor_y = cursor_y + (button_height + margin)  
+      
+  end
 
+  
+  
+  
+  return 0
 end
 
 
@@ -32,12 +102,12 @@ end
 
 local buttons = {}
 
-local font = "CHINESETAKEAWAY.ttf"
+local font 
 
-local estado = 0
+  estado = 0
 
 function love.load()
-  font = love.graphics.newFont(20)
+  font = love.graphics.setNewFont("CHINESETAKEAWAY.ttf",48)
   love.window.setTitle("Ninja Cut")
   love.window.setMode(1024, 840)
   
@@ -45,8 +115,10 @@ function love.load()
   
   -- No menu
   bkg_menu2 = love.graphics.newImage("bkg_menu2.jpg")
-  --src1 = love.audio.newSource("sounds/soundtrack/The Story So Far Bad Luck.mp3","stream")
-  --love.audio.play(src1)
+  src1 = love.audio.newSource("sounds/soundtrack/The Story So Far Bad Luck.mp3","stream")
+  love.audio.play(src1)
+  
+
   
   
   
@@ -55,6 +127,7 @@ function love.load()
         "Start Game",
         function()
           estado = estado +1  -- funcionando
+          love.audio.stop()
           print("Starting Game")
         end))
 
@@ -91,78 +164,23 @@ end
 function love.draw()
   local w,h =love.graphics.getDimensions()
   
-  love.graphics.setColor(1,1,1)
-  love.graphics.draw(bkg_menu2)
-  
-  
-  
-  -- imagino que substituirei tudo a baixo por funções
-  love.graphics.setColor(1,1,1)
-  love.graphics.draw(bkg_menu2)
-  
-  love.graphics.setNewFont("CHINESETAKEAWAY.ttf", 200)
-  love.graphics.setColor(1,1,1)
-  love.graphics.print("NINJA CUT",100,100)
-  
-
-
-  
-  local button_width = w * (1/3)
-  local button_height = h * (1/15)
-  local margin = 20
-  
-  local total_height = (button_height + margin) * #buttons
-  local cursor_y = 0
-  
-  
-  
-  
-  for i, button in ipairs(buttons) do
-      button.last = button.now
+  if estado == 0 then
+    menu(w,h,buttons,font)
+  elseif estado == 1 then
+    -- aqui será a partida
+    --[[ Pensamento: 
     
-      local bx = (w * 0.5) - (button_width * 0.5)
-      local by = (h*0.5) - (total_height * 0.5) + cursor_y
-      
-      local color = {0.4, 0.4, 0.5,1.0}
-      local mx,my = love.mouse.getPosition()
-      
-      
-      local hot = mx > bx and mx < bx + button_width and
-                  my > by and my < by + button_height
-                  
-      if hot then
-        color = {0.8,0.8,0.9, 1.0}
-      end
-      
-      button.now = love.mouse.isDown(1)
-      if button.now and not button.last and hot then
-        button.fn()
-      end
-      
-      love.graphics.setColor(unpack(color))
-      love.graphics.rectangle(
-        "fill",
-        bx,
-        by,
-        button_width,
-        button_height
-      )
-        
-      love.graphics.setColor(0,0,0,1)
-      
-      local textW = font:getWidth(button.text)
-      local textH = font:getHeight(button.text)
-      
-      love.graphics.print(
-          button.text,
-          font,
-          (w*0.5) - textW * 0.5,
-          by + textH * 0.5
-          )
-      
-      cursor_y = cursor_y + (button_height + margin)  
-      
+    ]]
+    love.graphics.print("jogo decorrendo", 70,70)
+  
+  else
+  
+    love.graphics.print("GAME OVER", 70,70)
+  
   end
+
+  
+  
     
     -- Agora é preciso fazer com que o jogo vá da opção "Start Game" para o jogo.
     --      Pensei transformar o que der ali em cima na Draw em função e criar uma máquina de estados. Assim, quando o usuário startasse "mde = 1" e o jogo começaria.
