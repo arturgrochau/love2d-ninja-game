@@ -129,9 +129,10 @@ function love.load()
   
   -- No menu
   bkg_menu2 = love.graphics.newImage("bkg_menu2.jpg")
-  src1 = love.audio.newSource("sounds/soundtrack/The Story So Far Bad Luck.mp3","stream")
+  src1 = love.audio.newSource("sounds/soundtrack/stretch-arm-strong-the-hardest-part.mp3","stream")
+  naruto = love.audio.newSource("sounds/soundtrack/Naruto OST 1 -  Naruto Main Theme.mp3","stream")
   cut_song = love.audio.newSource("sounds/soundtrack/effects/CUT.mp3","static")
-  --love.audio.play(src1)
+  --love.audio.play(naruto)
   
   -- No round
   bkg_round2_terrain = love.graphics.newImage("bkg_round2 _terrain.jpg")
@@ -177,11 +178,7 @@ end
 
 -- Função Eventos do Mouse
 function love.mousepressed(x,y,bt)
-  if estado == 1 then -- caso estado de partida
-    if enemys_close == true then -- se o inimigo está nas condições de corte
-      if bt == 1 then click_cut = 1 end -- quando ele apertar o bt esquerdo o corte será permitido
-    end
-  end
+
 
 
 end
@@ -250,16 +247,19 @@ function love.draw()
       love.graphics.print("CUT",200,200)
       
     -- se o usuário apertar a barra de espaço nesse meio tempo ele vai para próxima tela (estado +=1) 
-      if love.keyboard.isDown("space") or click_cut == 1 then 
+      click_cut = love.mouse.isDown(1)
+      if love.keyboard.isDown("space") or click_cut then 
         love.audio.play(cut_song)
-        estado = 3 end
+        estado = 3 
+        pontos = pontos +  1
+      end
       
     elseif ninja2_x < 50 then
       love.audio.play(cut_song)
       estado = 2 -- vai para o estado de derrota
       
     else
-      enemys_close = false -- não sabemos se vai ser útil
+      --enemys_close = false -- não sabemos se vai ser útil
     end
     
    -- estado 2 
@@ -267,6 +267,9 @@ function love.draw()
     -- perdeu
     love.graphics.setColor(1,0,0)
     love.graphics.print("LOSE", 70,70)
+    
+    -- pontuação
+    love.graphics.print("Pontos: ".. pontos,70,120)
     
     -- creditos
     love.graphics.setColor(1,1,1)
@@ -276,6 +279,9 @@ function love.draw()
     -- ganhou
     love.graphics.setColor(0,1,0)
     love.graphics.print("WIN", 70,70)
+  
+    -- pontuação
+    love.graphics.print("Pontos: ".. pontos,70,120)
   
     -- creditos
     love.graphics.setColor(1,1,1)
