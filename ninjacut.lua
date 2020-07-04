@@ -82,11 +82,21 @@ function menu(width,height,buttons,font)
       
   end
 
-  
-  
-  
   return 0
 end
+
+
+
+
+
+-- rodada 
+function rodada()
+
+
+end
+
+
+
 
 
 function newButton(text, fn)
@@ -104,10 +114,14 @@ local buttons = {}
 
 local font 
 
+local pontos = 0
+
   estado = 0
 
 function love.load()
-  font = love.graphics.setNewFont("CHINESETAKEAWAY.ttf",48)
+  font = love.graphics.setNewFont("CHINESETAKEAWAY.ttf",48)  -- font título menu
+  font2 = love.graphics.setNewFont("CHINESETAKEAWAY.ttf",27) -- font 
+  font3 = love.graphics.setNewFont(27)                       -- font pontos
   love.window.setTitle("Ninja Cut")
   love.window.setMode(1024, 840)
   
@@ -116,18 +130,23 @@ function love.load()
   -- No menu
   bkg_menu2 = love.graphics.newImage("bkg_menu2.jpg")
   src1 = love.audio.newSource("sounds/soundtrack/The Story So Far Bad Luck.mp3","stream")
-  love.audio.play(src1)
+  cut_song = love.audio.newSource("sounds/soundtrack/effects/CUT.mp3","static")
+  --love.audio.play(src1)
   
-
+  -- No round
+  bkg_round2_terrain = love.graphics.newImage("bkg_round2 _terrain.jpg")
   
   
+   ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
+   ninja2_y = 580
   
     table.insert(buttons, newButton(
-        
+        -- O botão start possui o poder de por o estado 1, o que marca o início da rodada e para a música da tela inicial.
         "Start Game",
         function()
+          love.audio.play(cut_song)
           estado = estado +1  -- funcionando
-          love.audio.stop()
+          -- love.audio.stop()
           print("Starting Game")
         end))
 
@@ -153,11 +172,34 @@ function love.load()
       end))
 end
 
---[[
-function love.update(dt)
-  
+
+
+
+-- Função Eventos do Mouse
+function love.mousepressed(x,y,bt)
+  if estado == 1 then -- caso estado de partida
+    if enemys_close == true then -- se o inimigo está nas condições de corte
+      if bt == 1 then click_cut = 1 end -- quando ele apertar o bt esquerdo o corte será permitido
+    end
+  end
+
+
 end
-]]
+
+
+
+
+-- variável que move ninja2
+-- é a ninja2_x
+function love.update(dt)
+  if estado == 1 then
+    love.timer.sleep(0.05)
+    ninja2_x = ninja2_x - 20
+  else
+    ninja2_x = 1200
+  end
+end
+
 
 
 
@@ -169,25 +211,79 @@ function love.draw()
   elseif estado == 1 then
     -- aqui será a partida
     --[[ Pensamento: 
-    
+                     Xbackground de teste(depois fazer ele correr)
+                     Xpontos no lado esquerdo da tela
+                     Xdesenhar 2  quadrados
+                     Xfazer o ninja2 correr
+                     fazer o ninja1 atacar
+                     arte dos ninjas
+                     
+                     
     ]]
-    love.graphics.print("jogo decorrendo", 70,70)
+    --background
+    love.graphics.draw(bkg_round2_terrain)
+    
+    -- placar
+    love.graphics.setColor(1,1,1)
+    love.graphics.setFont(font2)
+    love.graphics.print("Pontos: ".. pontos, w*4/5+50,8)
+    
+    -- ninja 1  
+    love.graphics.rectangle( "line", 50, 580, 200,160  )
+    
+    -- ninja 2
+    -- ele deve surgir dps de 4 segundos. Usarei a love.update para invocar ele 
+    --ninja2_x = 850 -- é necessário algo para fazer a caixa se mecher
+    --local ninja2_y = 580
+    love.graphics.rectangle( "line",  ninja2_x, ninja2_y, 200,160  )
+    
+    -- /!\ o quadrado nasce em algum lugar além do proposto e desejo emplementar o cooldown de 4 segundos depois que resolver isso.
+    -- Continuando ...
+    
   
+
+    -- Precisa-se detectar quando o ninja2 está próximo o suficiente de 1 para o corte.
+    local enemys_close
+    if ninja2_x >=50 and ninja2_x <= 300 then
+      enemys_close = true 
+      love.graphics.setColor(0,1,0)
+      love.graphics.print("CUT",200,200)
+      
+    -- se o usuário apertar a barra de espaço nesse meio tempo ele vai para próxima tela (estado +=1) 
+      if love.keyboard.isDown("space") or click_cut == 1 then 
+        love.audio.play(cut_song)
+        estado = 3 end
+      
+    elseif ninja2_x < 50 then
+      love.audio.play(cut_song)
+      estado = 2 -- vai para o estado de derrota
+      
+    else
+      enemys_close = false -- não sabemos se vai ser útil
+    end
+    
+   -- estado 2 
+  elseif estado == 2 then
+    -- perdeu
+    love.graphics.setColor(1,0,0)
+    love.graphics.print("LOSE", 70,70)
+    
+    -- creditos
+    love.graphics.setColor(1,1,1)
+    love.graphics.print("https://github.com/SlenderKS/NinjaCut",500,500)
+    
   else
+    -- ganhou
+    love.graphics.setColor(0,1,0)
+    love.graphics.print("WIN", 70,70)
   
-    love.graphics.print("GAME OVER", 70,70)
+    -- creditos
+    love.graphics.setColor(1,1,1)
+    love.graphics.print("https://github.com/SlenderKS/NinjaCut",500,500)
   
   end
 
   
-  
-    
-    -- Agora é preciso fazer com que o jogo vá da opção "Start Game" para o jogo.
-    --      Pensei transformar o que der ali em cima na Draw em função e criar uma máquina de estados. Assim, quando o usuário startasse "mde = 1" e o jogo começaria.
-    
-  
-    
-    
     
 end  
   
