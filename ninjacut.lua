@@ -132,15 +132,18 @@ function love.load()
   src1 = love.audio.newSource("sounds/soundtrack/stretch-arm-strong-the-hardest-part.mp3","stream")
   naruto = love.audio.newSource("sounds/soundtrack/Naruto OST 1 -  Naruto Main Theme.mp3","stream")
   cut_song = love.audio.newSource("sounds/soundtrack/effects/CUT.mp3","static")
-  --love.audio.play(naruto)
+  love.audio.play(naruto)
+  
+  
   
   -- No round
   bkg_round2_terrain = love.graphics.newImage("bkg_round2 _terrain.jpg")
-  
-  
    ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
    ninja2_y = 580
   
+  
+  
+  -- Parte dos botões
     table.insert(buttons, newButton(
         -- O botão start possui o poder de por o estado 1, o que marca o início da rodada e para a música da tela inicial.
         "Start Game",
@@ -178,9 +181,7 @@ end
 
 -- Função Eventos do Mouse
 function love.mousepressed(x,y,bt)
-
-
-
+  
 end
 
 
