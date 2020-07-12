@@ -137,7 +137,8 @@ function love.load()
   
   
   -- No round
-  bkg_round2_terrain = love.graphics.newImage("bkg_round2 _terrain.jpg")
+   bkg_round2_terrain = love.graphics.newImage("bkg_round2 _terrain.jpg")
+  cut_ninja = love.graphics.newImage("CutNinja1.png")   
    ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
    ninja2_y = 580
   
