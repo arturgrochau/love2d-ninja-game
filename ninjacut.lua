@@ -140,6 +140,7 @@ function love.load()
   -- No round
   bkg_round2_terrain = love.graphics.newImage("bkg_round2 _terrain.jpg")
   cut_ninja = love.graphics.newImage("CutNinja1.png")
+  enemy_ninja = love.graphics.newImage("cartoon_ninja.jpg")
   ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
   ninja2_y = 580
   derrota_menu = love.graphics.newImage("derrota.jpg") 
@@ -237,7 +238,10 @@ function love.draw()
     -- ele deve surgir dps de 4 segundos. Usarei a love.update para invocar ele 
     --ninja2_x = 850 -- é necessário algo para fazer a caixa se mecher
     --local ninja2_y = 580
-    love.graphics.rectangle( "line",  ninja2_x, ninja2_y, 200,160  )
+    --love.graphics.draw(cut_ninja, 50, 580)
+    love.graphics.rectangle( "line",  ninja2_x, ninja2_y, 200,160 ) 
+
+    
     
     -- /!\ o quadrado nasce em algum lugar além do proposto e desejo emplementar o cooldown de 4 segundos depois que resolver isso.
     -- Continuando ...
@@ -275,15 +279,16 @@ function love.draw()
    -- estado 2
   elseif estado == 2 then
     -- perdeu
+    love.graphics.draw(derrota_menu,640,300)
     love.graphics.setColor(1,0,0)
     love.graphics.print("LOSE", 70,70)
-    love.graphics.draw(derrota_menu,640,300)
+    
     
     -- pontuação
     love.graphics.print("Pontos: ".. pontos,70,120)
     
     -- creditos
-    love.graphics.setColor(1,1,1)
+    love.graphics.setColor(1,1,1)G
     love.graphics.print("https://github.com/SlenderKS/NinjaCut",20,20)  
   else
     -- ganhou
