@@ -282,13 +282,13 @@ function love.draw()
     love.graphics.draw(derrota_menu,640,300)
     love.graphics.setColor(1,0,0)
     love.graphics.print("LOSE", 70,70)
-    
+    --love.graphics.draw(derrota_menu,640,300)
     
     -- pontuação
     love.graphics.print("Pontos: ".. pontos,70,120)
     
     -- creditos
-    love.graphics.setColor(1,1,1)G
+    love.graphics.setColor(1,1,1)
     love.graphics.print("https://github.com/SlenderKS/NinjaCut",20,20)  
   else
     -- ganhou
