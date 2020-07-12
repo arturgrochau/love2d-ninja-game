@@ -228,7 +228,8 @@ function love.draw()
     love.graphics.print("Pontos: ".. pontos, w*4/5+50,8)
     
     -- ninja 1  
-    love.graphics.rectangle( "line", 50, 580, 200,160  )
+    love.graphics.draw(cut_ninja, 50, 580) 
+    --love.graphics.rectangle( "line", 50, 580, 200,160  ) 
     
     -- ninja 2
     -- ele deve surgir dps de 4 segundos. Usarei a love.update para invocar ele 
