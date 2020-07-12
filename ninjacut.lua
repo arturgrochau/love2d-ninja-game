@@ -118,6 +118,7 @@ local pontos = 0
 
   estado = 0
 
+
 function love.load()
   font = love.graphics.setNewFont("CHINESETAKEAWAY.ttf",48)  -- font título menu
   font2 = love.graphics.setNewFont("CHINESETAKEAWAY.ttf",27) -- font 
@@ -137,11 +138,10 @@ function love.load()
   
   
   -- No round
-   bkg_round2_terrain = love.graphics.newImage("bkg_round2 _terrain.jpg")
-  cut_ninja = love.graphics.newImage("CutNinja1.png")   
-   ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
-   ninja2_y = 580
-  
+  bkg_round2_terrain = love.graphics.newImage("bkg_round2 _terrain.jpg")
+  cut_ninja = love.graphics.newImage("CutNinja1.png")
+  ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
+  ninja2_y = 580
   
   
   -- Parte dos botões
@@ -193,7 +193,7 @@ end
 function love.update(dt)
   if estado == 1 then
     love.timer.sleep(0.05)
-    ninja2_x = ninja2_x - 20
+    ninja2_x = ninja2_x - 20 * (math.log(pontos + 1) + 1)
   else
     ninja2_x = 1200
   end
@@ -227,9 +227,9 @@ function love.draw()
     love.graphics.setFont(font2)
     love.graphics.print("Pontos: ".. pontos, w*4/5+50,8)
     
-    -- ninja 1  
-    love.graphics.draw(cut_ninja, 50, 580) 
-    --love.graphics.rectangle( "line", 50, 580, 200,160  ) 
+    -- ninja 1
+    love.graphics.draw(cut_ninja, 50, 580)
+    -- love.graphics.rectangle( "line", 50, 580, 200,160  )
     
     -- ninja 2
     -- ele deve surgir dps de 4 segundos. Usarei a love.update para invocar ele 
@@ -253,8 +253,13 @@ function love.draw()
       click_cut = love.mouse.isDown(1)
       if love.keyboard.isDown("space") or click_cut then 
         love.audio.play(cut_song)
-        estado = 3 
-        pontos = pontos +  1
+        pontos = pontos + 1
+        if (pontos < 20) then
+          ninja2_x = 1200
+          estado = 1
+        else
+          estado = 3
+        end
       end
       
     elseif ninja2_x < 50 then
@@ -265,7 +270,7 @@ function love.draw()
       --enemys_close = false -- não sabemos se vai ser útil
     end
     
-   -- estado 2 
+   -- estado 2
   elseif estado == 2 then
     -- perdeu
     love.graphics.setColor(1,0,0)
@@ -276,8 +281,7 @@ function love.draw()
     
     -- creditos
     love.graphics.setColor(1,1,1)
-    love.graphics.print("https://github.com/SlenderKS/NinjaCut",500,500)
-    
+    love.graphics.print("https://github.com/SlenderKS/NinjaCut",500,500)  
   else
     -- ganhou
     love.graphics.setColor(0,1,0)
@@ -285,14 +289,8 @@ function love.draw()
   
     -- pontuação
     love.graphics.print("Pontos: ".. pontos,70,120)
-  
-    -- creditos
     love.graphics.setColor(1,1,1)
-    love.graphics.print("https://github.com/SlenderKS/NinjaCut",500,500)
   
-  end
-
-  
-    
+  end 
 end  
   
