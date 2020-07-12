@@ -259,7 +259,7 @@ function love.draw()
       if pressed then 
         love.audio.play(cut_song)
         pontos = pontos + 1
-        if (pontos < 2) then
+        if (pontos < 20) then
           ninja2_x = 1200
           estado = 1
         else
@@ -284,7 +284,7 @@ function love.draw()
     
     -- creditos
     love.graphics.setColor(1,1,1)
-    love.graphics.print("https://github.com/SlenderKS/NinjaCut",50,50)  
+    love.graphics.print("https://github.com/SlenderKS/NinjaCut",20,20)  
   else
     -- ganhou
     love.graphics.draw(vitoria_menu,90,0)
