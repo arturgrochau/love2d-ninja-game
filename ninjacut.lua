@@ -142,6 +142,7 @@ function love.load()
   cut_ninja = love.graphics.newImage("CutNinja1.png")
   ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
   ninja2_y = 580
+  derrota_menu = love.graphics.newImage("derrota.jpg")
   
   
   -- Parte dos botões
@@ -275,7 +276,8 @@ function love.draw()
     -- perdeu
     love.graphics.setColor(1,0,0)
     love.graphics.print("LOSE", 70,70)
-    
+    love.graphics.draw(derrota_menu)
+          
     -- pontuação
     love.graphics.print("Pontos: ".. pontos,70,120)
     
