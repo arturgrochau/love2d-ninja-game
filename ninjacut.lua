@@ -142,7 +142,8 @@ function love.load()
   cut_ninja = love.graphics.newImage("CutNinja1.png")
   ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
   ninja2_y = 580
-  derrota_menu = love.graphics.newImage("derrota.jpg")
+  derrota_menu = love.graphics.newImage("derrota.jpg") 
+  vitoria_menu = love.graphics.newImage("ninja_vitorioso.png")
   
   
   -- Parte dos botões
@@ -244,6 +245,10 @@ function love.draw()
   
 
     -- Precisa-se detectar quando o ninja2 está próximo o suficiente de 1 para o corte.
+    click_cut = love.mouse.isDown(1)
+    space_cut = love.keyboard.isDown("space")
+    pressed = click_cut or space_cut
+
     local enemys_close
     if ninja2_x >=50 and ninja2_x <= 300 then
       enemys_close = true 
@@ -251,11 +256,10 @@ function love.draw()
       love.graphics.print("CUT",200,200)
       
     -- se o usuário apertar a barra de espaço nesse meio tempo ele vai para próxima tela (estado +=1) 
-      click_cut = love.mouse.isDown(1)
-      if love.keyboard.isDown("space") or click_cut then 
+      if pressed then 
         love.audio.play(cut_song)
         pontos = pontos + 1
-        if (pontos < 20) then
+        if (pontos < 2) then
           ninja2_x = 1200
           estado = 1
         else
@@ -263,12 +267,9 @@ function love.draw()
         end
       end
       
-    elseif ninja2_x < 50 then
+    elseif ninja2_x < 50 or (ninja2_x > 300 and ninja2_x < 1100 and pressed) then
       love.audio.play(cut_song)
-      estado = 2 -- vai para o estado de derrota
-      
-    else
-      --enemys_close = false -- não sabemos se vai ser útil
+      estado = 2 -- vai para o estado de derrota      
     end
     
    -- estado 2
@@ -276,21 +277,21 @@ function love.draw()
     -- perdeu
     love.graphics.setColor(1,0,0)
     love.graphics.print("LOSE", 70,70)
-    love.graphics.draw(derrota_menu)
-          
+    love.graphics.draw(derrota_menu,640,300)
+    
     -- pontuação
     love.graphics.print("Pontos: ".. pontos,70,120)
     
     -- creditos
     love.graphics.setColor(1,1,1)
-    love.graphics.print("https://github.com/SlenderKS/NinjaCut",500,500)  
+    love.graphics.print("https://github.com/SlenderKS/NinjaCut",50,50)  
   else
     -- ganhou
-    love.graphics.setColor(0,1,0)
-    love.graphics.print("WIN", 70,70)
+    love.graphics.draw(vitoria_menu,90,0)
   
     -- pontuação
-    love.graphics.print("Pontos: ".. pontos,70,120)
+    love.graphics.setColor(0,0,0)
+    love.graphics.print("Pontos: ".. pontos,100,180)
     love.graphics.setColor(1,1,1)
   
   end 
