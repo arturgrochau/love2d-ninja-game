@@ -121,6 +121,7 @@ local acertos = 0
 local vidas = 3
 
 
+
 function love.load()
   font = love.graphics.setNewFont("CHINESETAKEAWAY.ttf",48)  -- font título menu
   font2 = love.graphics.setNewFont("CHINESETAKEAWAY.ttf",27) -- font 
@@ -250,6 +251,10 @@ function love.draw()
     --love.graphics.draw(cut_ninja, 50, 580)
     love.graphics.rectangle( "line",  ninja2_x, ninja2_y, 200,160 ) 
 
+<<<<<<< HEAD
+=======
+    
+>>>>>>> cab32cac2204b61103910c90a7404acea410082c
     
     
    
@@ -295,9 +300,9 @@ function love.draw()
       
       
     -- se o usuário apertar a barra de espaço nesse meio tempo ele vai para próxima tela (estado +=1) 
-      click_cut = love.mouse.isDown(1)
-      if love.keyboard.isDown("space") or click_cut then 
+      if pressed then 
         love.audio.play(cut_song)
+<<<<<<< HEAD
         pontos = pontos +  1
         acertos = acertos +1
         ninja2_x = 850
@@ -312,6 +317,17 @@ function love.draw()
       
       
       
+=======
+        pontos = pontos + 1
+        if (pontos < 20) then
+          ninja2_x = 1200
+          estado = 1
+        else
+          estado = 3
+        end
+      end
+      
+>>>>>>> cab32cac2204b61103910c90a7404acea410082c
     elseif ninja2_x < 50 or (ninja2_x > 300 and ninja2_x < 1100 and pressed) then
       love.audio.play(cut_song)
       estado = 2 -- vai para o estado de derrota      
