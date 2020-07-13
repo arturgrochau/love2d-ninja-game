@@ -114,12 +114,9 @@ local buttons = {}
 
 local font 
 
+local pontos = 0
+
   estado = 0
-  
-local acertos = 0
-
-local vidas = 3
-
 
 function love.load()
   font = love.graphics.setNewFont("CHINESETAKEAWAY.ttf",48)  -- font título menu
@@ -141,12 +138,9 @@ function love.load()
   
   -- No round
   bkg_round2_terrain = love.graphics.newImage("bkg_round2 _terrain.jpg")
-  cut_ninja = love.graphics.newImage("CutNinja1.png")
-  enemy_ninja = love.graphics.newImage("cartoon_ninja.jpg")
-  ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
-  ninja2_y = 580
-  derrota_menu = love.graphics.newImage("derrota.jpg") 
-  vitoria_menu = love.graphics.newImage("ninja_vitorioso.png")
+   ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
+   ninja2_y = 580
+  
   
   
   -- Parte dos botões
@@ -198,7 +192,7 @@ end
 function love.update(dt)
   if estado == 1 then
     love.timer.sleep(0.05)
-    ninja2_x = ninja2_x - 20 * (math.log(pontos + 1) + 1)
+    ninja2_x = ninja2_x - 20
   else
     ninja2_x = 1200
   end
@@ -212,13 +206,6 @@ function love.draw()
   
   if estado == 0 then
     menu(w,h,buttons,font)
-    
-    
-    
-    
-    
-    
-    
   elseif estado == 1 then
     -- aqui será a partida
     --[[ Pensamento: 
@@ -239,107 +226,71 @@ function love.draw()
     love.graphics.setFont(font2)
     love.graphics.print("Pontos: ".. pontos, w*4/5+50,8)
     
-    -- ninja 1
-    love.graphics.draw(cut_ninja, 50, 580)
-    -- love.graphics.rectangle( "line", 50, 580, 200,160  )
+    -- ninja 1  
+    love.graphics.rectangle( "line", 50, 580, 200,160  )
     
     -- ninja 2
     -- ele deve surgir dps de 4 segundos. Usarei a love.update para invocar ele 
     --ninja2_x = 850 -- é necessário algo para fazer a caixa se mecher
     --local ninja2_y = 580
-    --love.graphics.draw(cut_ninja, 50, 580)
-    love.graphics.rectangle( "line",  ninja2_x, ninja2_y, 200,160 ) 
-
+    love.graphics.rectangle( "line",  ninja2_x, ninja2_y, 200,160  )
     
+    -- /!\ o quadrado nasce em algum lugar além do proposto e desejo emplementar o cooldown de 4 segundos depois que resolver isso.
+    -- Continuando ...
     
-   
   
 
     -- Precisa-se detectar quando o ninja2 está próximo o suficiente de 1 para o corte.
-    click_cut = love.mouse.isDown(1)
-    space_cut = love.keyboard.isDown("space")
-    pressed = click_cut or space_cut
-
     local enemys_close
     if ninja2_x >=50 and ninja2_x <= 300 then
       enemys_close = true 
       love.graphics.setColor(0,1,0)
       love.graphics.print("CUT",200,200)
       
---<<<<<<< HEAD
-      
-      
-      --[[      CÓDIGO DE BACKUP
-      -- se o usuário apertar a barra de espaço nesse meio tempo ele vai para próxima tela (estado +=1) 
-      click_cut = love.mouse.isDown(1)
-      if love.keyboard.isDown("space") or click_cut then 
-=======
-    -- se o usuário apertar a barra de espaço nesse meio tempo ele vai para próxima tela (estado +=1) 
-      if pressed then 
->>>>>>> cab32cac2204b61103910c90a7404acea410082c
-        love.audio.play(cut_song)
-        pontos = pontos + 1
-        if (pontos < 20) then
-          ninja2_x = 1200
-          estado = 1
-        else
-          estado = 3
-        end
-      end
-      ]]
-      
-      
-      
-      
-      
-      
-      
     -- se o usuário apertar a barra de espaço nesse meio tempo ele vai para próxima tela (estado +=1) 
       click_cut = love.mouse.isDown(1)
       if love.keyboard.isDown("space") or click_cut then 
         love.audio.play(cut_song)
+        estado = 3 
         pontos = pontos +  1
-        acertos = acertos +1
-        ninja2_x = 850
-        if acertos == 10 then
-          estado = 3 
-        
-        end 
       end
       
-      
-      
-      
-      
-      
-    elseif ninja2_x < 50 or (ninja2_x > 300 and ninja2_x < 1100 and pressed) then
+    elseif ninja2_x < 50 then
       love.audio.play(cut_song)
-      estado = 2 -- vai para o estado de derrota      
+      estado = 2 -- vai para o estado de derrota
+      
+    else
+      --enemys_close = false -- não sabemos se vai ser útil
     end
     
-   -- estado 2
+   -- estado 2 
   elseif estado == 2 then
     -- perdeu
-    love.graphics.draw(derrota_menu,640,300)
     love.graphics.setColor(1,0,0)
     love.graphics.print("LOSE", 70,70)
-    --love.graphics.draw(derrota_menu,640,300)
     
     -- pontuação
     love.graphics.print("Pontos: ".. pontos,70,120)
     
     -- creditos
     love.graphics.setColor(1,1,1)
-    love.graphics.print("https://github.com/SlenderKS/NinjaCut",20,20)  
+    love.graphics.print("https://github.com/SlenderKS/NinjaCut",500,500)
+    
   else
     -- ganhou
-    love.graphics.draw(vitoria_menu,90,0)
+    love.graphics.setColor(0,1,0)
+    love.graphics.print("WIN", 70,70)
   
     -- pontuação
-    love.graphics.setColor(0,0,0)
-    love.graphics.print("Pontos: ".. pontos,100,180)
-    love.graphics.setColor(1,1,1)
+    love.graphics.print("Pontos: ".. pontos,70,120)
   
-  end 
+    -- creditos
+    love.graphics.setColor(1,1,1)
+    love.graphics.print("https://github.com/SlenderKS/NinjaCut",500,500)
+  
+  end
+
+  
+    
 end  
   
