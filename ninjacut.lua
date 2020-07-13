@@ -118,9 +118,9 @@ local pontos = 0
 
   estado = 0
   
-local acertos = 0
+--local acertos = 0
   
-local vidas = 3
+--local vidas = 3
 
 function love.load()
   font = love.graphics.setNewFont("CHINESETAKEAWAY.ttf",48)  -- font título menu
@@ -143,10 +143,11 @@ function love.load()
   -- No round
   bkg_round2_terrain = love.graphics.newImage("bkg_round2 _terrain.jpg")
   cut_ninja = love.graphics.newImage("CutNinja1-removebg-preview.png")   
-   ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
-   ninja2_y = 580
   ninja_enemy = love.graphics.newImage("ninja_enemy-removebg-preview.png")   
-  
+  ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
+  ninja2_y = 580
+  derrota_menu = love.graphics.newImage("derrota.jpg") 
+  vitoria_menu = love.graphics.newImage("ninja_vitorioso.png")
   
   
   -- Parte dos botões
@@ -247,6 +248,10 @@ function love.draw()
     --love.graphics.draw(ninja_enemy,400,400  )
     
     -- Precisa-se detectar quando o ninja2 está próximo o suficiente de 1 para o corte.
+    click_cut = love.mouse.isDown(1)
+    space_cut = love.keyboard.isDown("space")
+    pressed = click_cut or space_cut
+
     local enemys_close
     if ninja2_x >=50 and ninja2_x <= 300 then
       enemys_close = true 
@@ -256,37 +261,55 @@ function love.draw()
       
       
     -- se o usuário apertar a barra de espaço nesse meio tempo ele vai para próxima tela (estado +=1) 
-      click_cut = love.mouse.isDown(1)
-      if love.keyboard.isDown("space") or click_cut then 
+      --click_cut = love.mouse.isDown(1)
+      --if love.keyboard.isDown("space") or click_cut then 
+        --love.audio.play(cut_song)
+        --pontos = pontos +  1
+        --acertos = acertos +1
+        --ninja2_x = 850
+            -- se o usuário apertar a barra de espaço nesse meio tempo ele vai para próxima tela (estado +=1) 
+        if pressed then 
+          love.audio.play(cut_song)
+          pontos = pontos + 1
+          if (pontos < 20) then
+            ninja2_x = 1200
+            estado = 1
+          else
+            estado = 3
+          end
+        end
+
+      elseif ninja2_x < 50 or (ninja2_x > 300 and ninja2_x < 1100 and pressed) then
         love.audio.play(cut_song)
-        pontos = pontos +  1
-        acertos = acertos +1
-        ninja2_x = 850
+        estado = 2 -- vai para o estado de derrota      
+      end
         
         -- é a quantidade de acertos que colocamos aqui que determinam a dificuldade para passar de nível
-        if acertos == 3 then
-          estado = 3 
-        end
-      end
+        --if acertos == 3 then
+         -- estado = 3 
+        --end
+     -- end
       
-    elseif ninja2_x < 50 then
-      ninja2_x = 850
-      vidas = vidas -1
-      love.audio.play(cut_song)
+    --elseif ninja2_x < 50 then
+      --ninja2_x = 850
+      --vidas = vidas -1
+      --love.audio.play(cut_song)
       
-      if vidas == 0 then
-        love.audio.play(cut_song)
-        estado = 2 -- vai para o estado de derrota
-      end
-    else
+      --if vidas == 0 then
+        --love.audio.play(cut_song)
+        --estado = 2 -- vai para o estado de derrota
+     -- end
+    --else
       --enemys_close = false -- não sabemos se vai ser útil
-    end
+    --end
     
-   -- estado 2 
-  elseif estado == 2 then
-    -- perdeu
-    love.graphics.setColor(1,0,0)
-    love.graphics.print("LOSE", 70,70)
+  -- estado 2
+elseif estado == 2 then
+  -- perdeu
+  love.graphics.draw(derrota_menu,640,300)
+  love.graphics.setColor(1,0,0)
+  love.graphics.print("LOSE", 70,70)
+  --love.graphics.draw(derrota_menu,640,300)
     
     -- pontuação
     love.graphics.print("Pontos: ".. pontos,70,120)
@@ -297,19 +320,16 @@ function love.draw()
     
   else
     -- ganhou
-    love.graphics.setColor(0,1,0)
-    love.graphics.print("WIN", 70,70)
+    love.graphics.draw(vitoria_menu,90,0)
   
-    -- pontuação
-    love.graphics.print("Pontos: ".. pontos,70,120)
+  -- pontuação
+  love.graphics.setColor(0,0,0)
+  love.graphics.print("Pontos: ".. pontos,100,180)
+  love.graphics.setColor(1,1,1)
   
     -- creditos
-    love.graphics.setColor(1,1,1)
-    love.graphics.print("https://github.com/SlenderKS/NinjaCut",500,500)
-  
+    --love.graphics.setColor(1,1,1)
+    --love.graphics.print("https://github.com/SlenderKS/NinjaCut",500,500)
   end
-
-  
-    
 end  
   
