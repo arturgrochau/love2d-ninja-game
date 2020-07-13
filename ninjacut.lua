@@ -316,7 +316,7 @@ elseif estado == 2 then
     
     -- creditos
     love.graphics.setColor(1,1,1)
-    love.graphics.print("https://github.com/SlenderKS/NinjaCut",500,500)
+    love.graphics.print("https://github.com/SlenderKS/NinjaCut",20,20)
     
   else
     -- ganhou
