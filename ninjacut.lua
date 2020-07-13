@@ -117,6 +117,10 @@ local font
 local pontos = 0
 
   estado = 0
+  
+local acertos = 0
+  
+local vidas = 3
 
 function love.load()
   font = love.graphics.setNewFont("CHINESETAKEAWAY.ttf",48)  -- font título menu
@@ -138,8 +142,10 @@ function love.load()
   
   -- No round
   bkg_round2_terrain = love.graphics.newImage("bkg_round2 _terrain.jpg")
+  cut_ninja = love.graphics.newImage("CutNinja1-removebg-preview.png")   
    ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
    ninja2_y = 580
+  ninja_enemy = love.graphics.newImage("ninja_enemy-removebg-preview.png")   
   
   
   
@@ -191,8 +197,8 @@ end
 -- é a ninja2_x
 function love.update(dt)
   if estado == 1 then
-    love.timer.sleep(0.05)
-    ninja2_x = ninja2_x - 20
+    love.timer.sleep(0.05) 
+    ninja2_x = ninja2_x - 20 * (math.log(pontos + 1) + 1)
   else
     ninja2_x = 1200
   end
@@ -227,19 +233,19 @@ function love.draw()
     love.graphics.print("Pontos: ".. pontos, w*4/5+50,8)
     
     -- ninja 1  
-    love.graphics.rectangle( "line", 50, 580, 200,160  )
+    love.graphics.draw(cut_ninja, 50, 580) 
+    --love.graphics.rectangle( "line", 50, 580, 200,160  )
+    
     
     -- ninja 2
     -- ele deve surgir dps de 4 segundos. Usarei a love.update para invocar ele 
     --ninja2_x = 850 -- é necessário algo para fazer a caixa se mecher
     --local ninja2_y = 580
-    love.graphics.rectangle( "line",  ninja2_x, ninja2_y, 200,160  )
+    --love.graphics.rectangle( "line",  ninja2_x, ninja2_y, 200,160  )
+    love.graphics.draw(ninja_enemy,ninja2_x,ninja2_y  )
+    --love.graphics.setColor(1,1,1)
+    --love.graphics.draw(ninja_enemy,400,400  )
     
-    -- /!\ o quadrado nasce em algum lugar além do proposto e desejo emplementar o cooldown de 4 segundos depois que resolver isso.
-    -- Continuando ...
-    
-  
-
     -- Precisa-se detectar quando o ninja2 está próximo o suficiente de 1 para o corte.
     local enemys_close
     if ninja2_x >=50 and ninja2_x <= 300 then
@@ -247,18 +253,31 @@ function love.draw()
       love.graphics.setColor(0,1,0)
       love.graphics.print("CUT",200,200)
       
+      
+      
     -- se o usuário apertar a barra de espaço nesse meio tempo ele vai para próxima tela (estado +=1) 
       click_cut = love.mouse.isDown(1)
       if love.keyboard.isDown("space") or click_cut then 
         love.audio.play(cut_song)
-        estado = 3 
         pontos = pontos +  1
+        acertos = acertos +1
+        ninja2_x = 850
+        
+        -- é a quantidade de acertos que colocamos aqui que determinam a dificuldade para passar de nível
+        if acertos == 3 then
+          estado = 3 
+        end
       end
       
     elseif ninja2_x < 50 then
+      ninja2_x = 850
+      vidas = vidas -1
       love.audio.play(cut_song)
-      estado = 2 -- vai para o estado de derrota
       
+      if vidas == 0 then
+        love.audio.play(cut_song)
+        estado = 2 -- vai para o estado de derrota
+      end
     else
       --enemys_close = false -- não sabemos se vai ser útil
     end
