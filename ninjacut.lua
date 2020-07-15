@@ -148,7 +148,7 @@ function love.load()
   ninja2_y = 630
   derrota_menu = love.graphics.newImage("derrota.jpg") 
   vitoria_menu = love.graphics.newImage("ninja_vitorioso.png")
-  
+  heart = love.graphics.newImage("heart_transparente.png")
   
   -- Parte dos botões
     table.insert(buttons, newButton(
@@ -293,6 +293,21 @@ function love.draw()
         
         
       end
+        
+      -- desenho dos corações
+      if vidas == 3 then
+        love.graphics.draw(heart,50,10)
+        love.graphics.draw(heart,75,10)
+        love.graphics.draw(heart,100,10)
+      elseif vidas == 2 then
+        love.graphics.draw(heart,50,10)
+        love.graphics.draw(heart,75,10)
+      elseif vidas == 1 then
+        love.graphics.draw(heart,50,10)
+      end
+        
+        
+        
         
         -- é a quantidade de acertos que colocamos aqui que determinam a dificuldade para passar de nível
         --if acertos == 3 then
