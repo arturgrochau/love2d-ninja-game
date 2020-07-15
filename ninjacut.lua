@@ -143,7 +143,7 @@ function love.load()
   cut_ninja = love.graphics.newImage("CutNinja1-removebg-preview.png")   
   ninja_enemy = love.graphics.newImage("ninja_enemy-removebg-preview.png")   
   ninja2_x = 850 -- a caixa precisa se mecher horizontalmente e, portanto, aqui serão feitas as modificações. 
-  ninja2_y = 580
+  ninja2_y = 630
   derrota_menu = love.graphics.newImage("derrota.jpg") 
   vitoria_menu = love.graphics.newImage("ninja_vitorioso.png")
   heart = love.graphics.newImage("heart_transparente.png")
@@ -232,7 +232,7 @@ function love.draw()
     love.graphics.print("Pontos: ".. pontos, w*4/5+50,8)
     
     -- ninja 1  
-    love.graphics.draw(cut_ninja, 50, 580) 
+    love.graphics.draw(cut_ninja, 50, 630) 
     --love.graphics.rectangle( "line", 50, 580, 200,160  )
     
     
