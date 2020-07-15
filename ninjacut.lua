@@ -120,7 +120,7 @@ local pontos = 0
   
 --local acertos = 0
   
---local vidas = 3
+local vidas = 3
 
 function love.load()
   font = love.graphics.setNewFont("CHINESETAKEAWAY.ttf",48)  -- font título menu
@@ -279,9 +279,19 @@ function love.draw()
           end
         end
 
-      elseif ninja2_x < 50 or (ninja2_x > 300 and ninja2_x < 1100 and pressed) then
+      elseif ninja2_x > 300 and ninja2_x < 1100 and pressed then
         love.audio.play(cut_song)
-        estado = 2 -- vai para o estado de derrota      
+        estado = 2 -- vai para o estado de derrota 
+        
+      elseif ninja2_x < 50 then
+        love.audio.play(cut_song)
+        vidas = vidas -1
+        if vidas == 0 then
+          estado = 2
+        end
+        ninja2_x = 1200
+        
+        
       end
         
         -- é a quantidade de acertos que colocamos aqui que determinam a dificuldade para passar de nível
