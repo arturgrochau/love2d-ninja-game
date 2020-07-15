@@ -271,7 +271,7 @@ function love.draw()
         if pressed then 
           love.audio.play(cut_song)
           pontos = pontos + 1
-          if (pontos < 20) then
+          if (pontos < 4) then
             ninja2_x = 1200
             estado = 1
           else
