@@ -6,12 +6,10 @@
       Cada nível só será desbloqueado a partir da finalização do anterior.
       
     Quando um nível carregar outro som tocará, a imagem de fundo mudará e os personagens serão introduzidos.
-
 ]]
 
 --[[ O que está sendo feito: X(Tela de menu) e inserção de som inicial.
                                Máquina de estados
-
 ]]
 
 function menu(width,height,buttons,font)
@@ -271,7 +269,7 @@ function love.draw()
         if pressed then 
           love.audio.play(cut_song)
           pontos = pontos + 1
-          if (pontos < 20) then
+          if (pontos < 4) then
             ninja2_x = 1200
             estado = 1
           else
@@ -332,4 +330,3 @@ elseif estado == 2 then
     --love.graphics.print("https://github.com/SlenderKS/NinjaCut",500,500)
   end
 end  
-  
