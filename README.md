@@ -29,7 +29,7 @@ sounds/              # Soundtracks and sound effects
 
 ## 🎓 Academic Context
 
-This game was developed as part of a coursework or extracurricular project at **PUC-Rio**, likely within a computer science or interactive media track, emphasizing Lua's game development capabilities.
+This game was developed as part of a coursework at **PUC-Rio**
 
 ## 🙌 Contributors
 
