@@ -1,6 +1,6 @@
 # NinjaCut
 
-A side-scrolling action game originally developed in 2020 at [PUC-Rio](https://www.puc-rio.br/) (Pontifícia Universidade Católica do Rio de Janeiro), the same university responsible for the creation of the Lua programming language. This project was led by [@slenderks](https://github.com/slenderks) and includes contributions from multiple students, including [@arturpedrotti](https://github.com/arturpedrotti).
+A side-scrolling action game originally developed in 2020 at [PUC-Rio](https://www.puc-rio.br/) (Pontifícia Universidade Católica do Rio de Janeiro), the same university responsible for the creation of the Lua programming language. This project was led by [@slenderks](https://github.com/slenderks) and includes contributions from [@arturpedrotti](https://github.com/arturpedrotti).
 
 ## 🕹️ About the Game
 
@@ -35,8 +35,6 @@ This game was developed as part of a coursework at **PUC-Rio**
 
 - [@slenderks](https://github.com/slenderks) — Project lead  
 - [@arturpedrotti](https://github.com/arturpedrotti) — Contributor  
-- [@lucasxd01](https://github.com/lucasxd01) — Contributor  
-- [@yasuo231](https://github.com/yasuo231) — Contributor  
 
 ## ⚙️ Technologies
 
